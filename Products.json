@@ -1,0 +1,37 @@
+[
+  {
+    "_id": 1,
+    "ProductID": 1,
+    "ProductName": "MongoDB Podcast",
+    "Description": "Covers NoSQL Queries",
+    "Price": 19.99
+  },
+  {
+    "_id": 2,
+    "ProductID": 2,
+    "ProductName": "Visualization Podcast",
+    "Description": "Examines Common Visualizations",
+    "Price": 29.99
+  },
+  {
+    "_id": 3,
+    "ProductID": 3,
+    "ProductName": "MySQL Podcast",
+    "Description": "Common Query Operations",
+    "Price": 39.99
+  },
+  {
+    "_id": 4,
+    "ProductID": 4,
+    "ProductName": "Excel Podcast",
+    "Description": "Presents Excel Pivot Tables",
+    "Price": 49.99
+  },
+  {
+    "_id": 5,
+    "ProductID": 5,
+    "ProductName": "Database Podcast",
+    "Description": "Overview of database process",
+    "Price": 59.99
+  }
+]

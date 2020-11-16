@@ -1,0 +1,34 @@
+[
+  {
+    "_id": ObjectId("5fb2d45ccdfce75755454de7"),
+    "StudentID": 501,
+    "Name": "Monica Davis",
+    "Year": "F",
+    "Phone": "555-1212",
+    "Email": "MD@gmail.com"
+  },
+  {
+    "_id": ObjectId("5fb2d45ccdfce75755454de8"),
+    "StudentID": 502,
+    "Name": "Jimmy Lewis",
+    "Year": "So",
+    "Phone": "555-1213",
+    "Email": "JL@gmail.com"
+  },
+  {
+    "_id": ObjectId("5fb2d45ccdfce75755454de9"),
+    "StudentID": 503,
+    "Name": "Sara Knight",
+    "Year": "J",
+    "Phone": "555-1214",
+    "Email": "SK@gmail.com"
+  },
+  {
+    "_id": ObjectId("5fb2d45ccdfce75755454dea"),
+    "StudentID": 504,
+    "Name": "Billy Williams",
+    "Year": "S",
+    "Phone": "555-1214",
+    "Email": "BW@gmail.com"
+  }
+]

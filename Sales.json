@@ -1,0 +1,83 @@
+[
+  {
+    "_id": 1,
+    "SalesPerson": 101,
+    "Region": "West",
+    "CustomerID": 401,
+    "ProductID": 1,
+    "Total": 19.99,
+    "SaleDate": "12-01-2020"
+  },
+  {
+    "_id": 2,
+    "SalesPerson": 102,
+    "Region": "West",
+    "CustomerID": 403,
+    "ProductID": 2,
+    "Total": 29.99,
+    "SaleDate": "11-01-2020"
+  },
+  {
+    "_id": 3,
+    "SalesPerson": 103,
+    "Region": "West",
+    "CustomerID": 403,
+    "ProductID": 3,
+    "Total": 39.99,
+    "SaleDate": "10-01-2020"
+  },
+  {
+    "_id": 4,
+    "SalesPerson": 104,
+    "Region": "West",
+    "CustomerID": 401,
+    "ProductID": 4,
+    "Total": 49.99,
+    "SaleDate": "09-01-2020"
+  },
+  {
+    "_id": 5,
+    "SalesPerson": 105,
+    "Region": "West",
+    "CustomerID": 401,
+    "ProductID": 5,
+    "Total": 59.99,
+    "SaleDate": "08-01-2020"
+  },
+  {
+    "_id": 6,
+    "SalesPerson": 106,
+    "Region": "West",
+    "CustomerID": 402,
+    "ProductID": 1,
+    "Total": 19.99,
+    "SaleDate": "06-01-2020"
+  },
+  {
+    "_id": 7,
+    "SalesPerson": 107,
+    "Region": "West",
+    "CustomerID": 402,
+    "ProductID": 2,
+    "Total": 29.99,
+    "SaleDate": "07-01-2020"
+  },
+  {
+    "_id": 8,
+    "SalesPerson": 108,
+    "Region": "West",
+    "CustomerID": 402,
+    "ProductID": 3,
+    "Total": 39.99,
+    "SaleDate": "08-01-2020"
+  },
+  {
+    "_id": 9,
+    "SalesPerson": 109,
+    "Region": "West",
+    "CustomerID": 402,
+    "ProductID": 4,
+    "Total": 49.99,
+    "SaleDate": "09-01-2020"
+  }
+]
