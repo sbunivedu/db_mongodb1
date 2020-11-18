@@ -266,13 +266,29 @@ db.Employees.update(
 ```
 Before:
 ```json
->>> db.Employees.find({"_id":12345})
-{ "_id" : 12345, "Name" : "Betty Love", "State" : "Boston", "Position" : "Sales", "Phone" : "555-1217", "Region" : "East", "Email" : "BD@MyBusiness.com" }
+>>> db.Employees.find({"_id":12345}).pretty()
+{
+	"_id" : 12345,
+	"Name" : "Betty Love",
+	"State" : "Boston",
+	"Position" : "Sales",
+	"Phone" : "555-1217",
+	"Region" : "East",
+	"Email" : "BD@MyBusiness.com"
+}
 ```
 After:
 ```json
->>> db.Employees.find({"_id":12345})
-{ "_id" : 12345, "Name" : "Betty Love", "State" : "Boston", "Position" : "Supervisor", "Phone" : "555-1217", "Region" : "East", "Email" : "BD@MyBusiness.com" }
+>>> db.Employees.find({"_id":12345}).pretty()
+{
+	"_id" : 12345,
+	"Name" : "Betty Love",
+	"State" : "Boston",
+	"Position" : "Supervisor",
+	"Phone" : "555-1217",
+	"Region" : "East",
+	"Email" : "BD@MyBusiness.com"
+}
 ```
 
 13.  Delete the employee with ID 12345.
