@@ -29,7 +29,7 @@ Expected output:
 ```
 
 1. List names of employees who are supervisors (the "Position" field is "Supervisor").
-```json
+```
 db.collection.find({
   "Position": "Supervisor"
 },
@@ -60,7 +60,7 @@ Expected output:
 ```
 
 1. List orders with a total price ("Total") greater than or equal to $39.99.
-```json
+```
 db.Sales.find({"Total": {$gte: 39.99}}).pretty()
 ```
 Expected output:
@@ -113,7 +113,7 @@ Expected output:
 ```
 
 1. List names and states of employees who live in Arizona or AZ.
-```json
+```
 db.Employees.find({
   $or: [
     {
@@ -139,7 +139,7 @@ Expected output:
 ```
 
 1. List names and states of employees who are sales team members ("Position"="Sales") and do not live in California.
-```json
+```
 db.Employees.find({
   $and: [
     {
@@ -168,7 +168,7 @@ Expected output:
 ```
 
 1. List employee names in descending order.
-```json
+```
 db.Employees.find({}, {"Name":1, "_id":0}).sort({"Name":-1})
 ```
 Expected output:
@@ -185,7 +185,7 @@ Expected output:
 ```
 
 1. Count the number of documents in the SalesTeam collection.
-```json
+```
 db.SalesTeam.aggregate(
   [
     {
@@ -203,7 +203,7 @@ Expected output:
 ```
 
 1. Calculate the average product price using the "Products" collection.
-```json
+```
 db.Products.aggregate(
   [
     {
@@ -221,7 +221,7 @@ Expected output:
 ```
 
 1. Calculate total sales by customer using the "Sales" collection.
-```json
+```
 db.Sales.aggregate(
   [
     {
@@ -246,7 +246,7 @@ Expected output:
 ```
 
 1. Update the employee with ID 12345 to the position of supervisor.
-```json
+```
 db.Employees.update(
   {"_id": 12345},
   {$set: {"Position": "Supervisor"}}
@@ -264,7 +264,7 @@ After:
 ```
 
 1.  Delete the employee with ID 12345.
-```json
+```
 db.Employees.deleteOne({"_id": 12345})
 ```
 Expected output:
@@ -273,10 +273,15 @@ Expected output:
 ```
 
 1. Delete all employees who work in California.
-```json
+```
 db.Employees.deleteMany({"State": "California"})
 ```
 Expected output:
 ```json
 { "acknowledged" : true, "deletedCount" : 2 }
+```
+
+1. Delete all documents in the Employees collection.
+```
+db.Employees.deleteMany({});
 ```

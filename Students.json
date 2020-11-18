@@ -1,4 +1,4 @@
-[
+var students = [
   {
     "_id": ObjectId("5fb2d45ccdfce75755454de7"),
     "StudentID": 501,
@@ -31,4 +31,6 @@
     "Phone": "555-1214",
     "Email": "BW@gmail.com"
   }
-]
+];
+
+db.Students.insert(students);

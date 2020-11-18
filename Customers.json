@@ -1,4 +1,4 @@
-[
+var customers = [
   {
     "_id": 401,
     "Name": "Monica Davis",
@@ -23,4 +23,6 @@
     "Phone": "555-1214",
     "Email": "BW@gmail.com"
   }
-]
+];
+
+db.Customers.insert(customers);

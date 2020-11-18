@@ -1,4 +1,4 @@
-[
+var salesteam = [
   {
     "_id": 10101,
     "SalesPerson": 10101,
@@ -71,4 +71,6 @@
     "Region": "North",
     "Email": "MH@MyBusiness.com"
   }
-]
+];
+
+db.SalesTeam.insert(salesteam);

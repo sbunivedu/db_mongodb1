@@ -1,4 +1,4 @@
-[
+var employees = [
   {
     "_id": 10101,
     "Name": "Janet Clive",
@@ -80,4 +80,6 @@
     "Region": "North",
     "Email": "MH@MyBusiness.com"
   }
-]
+];
+
+db.Employees.insert(employees);

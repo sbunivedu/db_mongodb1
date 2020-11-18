@@ -1,4 +1,4 @@
-[
+var products = [
   {
     "_id": 1,
     "ProductID": 1,
@@ -34,4 +34,6 @@
     "Description": "Overview of database process",
     "Price": 59.99
   }
-]
+];
+
+db.Products.insert(products);
