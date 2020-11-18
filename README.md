@@ -1,3 +1,16 @@
+#MongoDB Case Study
+
+This case study walks you through a set of example operations in MongoDB. The collections can be created using data set files with the corresponding names.
+
+You can consult the following for explanations of the operations:
+* https://docs.mongodb.com/manual/crud/
+* https://www.tutorialspoint.com/mongodb/index.htm
+
+You can try the examples using the data sets and the following online tools:
+* The `mongo` web shell on this page https://docs.mongodb.com/manual/tutorial/insert-documents/
+* Mongo Playground at https://mongoplayground.net/
+
+Some data sets come from the "Introduction to Data Mining and Analytics" book.
 
 1. List all employee names.
 ```
@@ -16,7 +29,7 @@ Expected output:
 { "Name" : "Mary Hayes" }
 ```
 
-1. List student names and phone numbers.
+2. List student names and phone numbers.
 ```
 db.Students.find({}, {"Name":1, "Phone":1, "_id":0})
 ```
@@ -27,8 +40,7 @@ Expected output:
 { "Name" : "Sara Knight", "Phone" : "555-1214" }
 { "Name" : "Billy Williams", "Phone" : "555-1214" }
 ```
-
-1. List names of employees who are supervisors (the "Position" field is "Supervisor").
+3. List names of employees who are supervisors (the "Position" field is "Supervisor").
 ```
 db.collection.find({
   "Position": "Supervisor"
@@ -44,7 +56,7 @@ Expected output:
 { "Name" : "Martha Swan" }
 ```
 
-1. List names and states of employees who do not live in Arizona.
+4. List names and states of employees who do not live in Arizona.
 ```
 db.Employees.find({"State": {$ne: "Arizona"}}, {"Name":1, "State":1, "_id":0})
 ```
@@ -59,7 +71,7 @@ Expected output:
 { "Name" : "Mike Jones", "State" : "California" }
 ```
 
-1. List orders with a total price ("Total") greater than or equal to $39.99.
+5. List orders with a total price ("Total") greater than or equal to $39.99.
 ```
 db.Sales.find({"Total": {$gte: 39.99}}).pretty()
 ```
@@ -112,7 +124,7 @@ Expected output:
 }
 ```
 
-1. List names and states of employees who live in Arizona or AZ.
+6. List names and states of employees who live in Arizona or AZ.
 ```
 db.Employees.find({
   $or: [
@@ -138,7 +150,7 @@ Expected output:
 { "Name" : "Mary Hayes", "State" : "Arizona" }
 ```
 
-1. List names and states of employees who are sales team members ("Position"="Sales") and do not live in California.
+7. List names and states of employees who are sales team members ("Position"="Sales") and do not live in California.
 ```
 db.Employees.find({
   $and: [
@@ -167,7 +179,7 @@ Expected output:
 { "Name" : "Mary Hayes", "State" : "Arizona" }
 ```
 
-1. List employee names in descending order.
+8. List employee names in descending order.
 ```
 db.Employees.find({}, {"Name":1, "_id":0}).sort({"Name":-1})
 ```
@@ -184,7 +196,7 @@ Expected output:
 { "Name" : "Betty Love" }
 ```
 
-1. Count the number of documents in the SalesTeam collection.
+9. Count the number of documents in the SalesTeam collection.
 ```
 db.SalesTeam.aggregate(
   [
@@ -202,7 +214,7 @@ Expected output:
 { "_id" : null, "count" : 9 }
 ```
 
-1. Calculate the average product price using the "Products" collection.
+10. Calculate the average product price using the "Products" collection.
 ```
 db.Products.aggregate(
   [
@@ -220,7 +232,7 @@ Expected output:
 { "_id" : null, "avgPrice" : 39.989999999999995 }
 ```
 
-1. Calculate total sales by customer using the "Sales" collection.
+11. Calculate total sales by customer using the "Sales" collection.
 ```
 db.Sales.aggregate(
   [
@@ -245,7 +257,7 @@ Expected output:
 { "_id" : 403, "total" : 69.98 }
 ```
 
-1. Update the employee with ID 12345 to the position of supervisor.
+12. Update the employee with ID 12345 to the position of supervisor.
 ```
 db.Employees.update(
   {"_id": 12345},
@@ -263,16 +275,18 @@ After:
 { "_id" : 12345, "Name" : "Betty Love", "State" : "Boston", "Position" : "Supervisor", "Phone" : "555-1217", "Region" : "East", "Email" : "BD@MyBusiness.com" }
 ```
 
-1.  Delete the employee with ID 12345.
+13.  Delete the employee with ID 12345.
 ```
 db.Employees.deleteOne({"_id": 12345})
+or
+db.Employees.remove({"_id": 12345})
 ```
 Expected output:
 ```json
 { "acknowledged" : true, "deletedCount" : 1 }
 ```
 
-1. Delete all employees who work in California.
+14. Delete all employees who work in California.
 ```
 db.Employees.deleteMany({"State": "California"})
 ```
@@ -280,8 +294,26 @@ Expected output:
 ```json
 { "acknowledged" : true, "deletedCount" : 2 }
 ```
+```
+db.Employees.remove({"State": "California"})
+```
+Expected output:
+```json
+WriteResult({ "nRemoved" : 2 })
+```
 
-1. Delete all documents in the Employees collection.
+15. Delete all documents in the Employees collection.
 ```
 db.Employees.deleteMany({});
+```
+Expected output:
+```json
+{ "acknowledged" : true, "deletedCount" : 9 }
+```
+```
+db.Employees.remove({})
+```
+Expected output:
+```
+WriteResult({ "nRemoved" : 9 })
 ```
