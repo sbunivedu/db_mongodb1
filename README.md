@@ -1,4 +1,4 @@
-#MongoDB Case Study
+# MongoDB Case Study
 
 This case study walks you through a set of example operations in MongoDB. The collections can be created using data set files with the corresponding names.
 
