@@ -333,3 +333,37 @@ Expected output:
 ```
 WriteResult({ "nRemoved" : 9 })
 ```
+
+## Geospatial Queries
+
+Use the `$near` operator to return documents that are at least 1000 meters from and at most 5000 meters from the specified GeoJSON point, sorted in order from nearest to farthest.
+```json
+db.Places.find(
+   {
+     location:
+       { $near:
+          {
+            $geometry: { type: "Point",  coordinates: [ -73.9667, 40.78 ] },
+            $minDistance: 1000,
+            $maxDistance: 5000
+          }
+       }
+   }
+)
+```
+
+Use the `geoNear` aggregation operation to return documents that match the query filter `{ category: "Parks" }`, sorted in order of nearest to farthest to the specified GeoJSON point.
+```json
+db.Places.aggregate( [
+   {
+      $geoNear: {
+         near: { type: "Point", coordinates: [ -73.9667, 40.78 ] },
+         spherical: true,
+         query: { category: "Parks" },
+         distanceField: "calcDistance"
+      }
+   }
+] )
+```
+
+Check out [this tutorial](https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/) for more advanced geospatial queries.
