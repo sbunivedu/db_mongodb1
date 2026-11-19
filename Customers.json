@@ -25,4 +25,4 @@ var customers = [
   }
 ];
 
-db.Customers.insert(customers);
+db.customers.insert(customers);

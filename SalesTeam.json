@@ -73,4 +73,4 @@ var salesteam = [
   }
 ];
 
-db.SalesTeam.insert(salesteam);
+db.salesTeam.insert(salesteam);

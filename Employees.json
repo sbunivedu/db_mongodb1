@@ -82,4 +82,4 @@ var employees = [
   }
 ];
 
-db.Employees.insert(employees);
+db.employees.insert(employees);

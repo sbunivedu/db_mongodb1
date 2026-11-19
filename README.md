@@ -1,369 +1,148 @@
-# MongoDB Case Study
+# MongoDB Database Case Study
 
-This case study walks you through a set of example operations in MongoDB. The collections can be created using data set files with the corresponding names.
+In this lab, you will load the repository's multi-collection dataset directly into a browser-based MongoDB sandbox, explore how BSON documents differ from relational tables, practice core CRUD queries, and build step-by-step aggregation pipelines—no local database installation required.
 
-You can consult the following for explanations of the operations:
-* https://docs.mongodb.com/manual/crud/
-* https://www.tutorialspoint.com/mongodb/index.htm
+## 1. Repository Files & Dataset Overview
 
-You can try the examples using the data sets and the following online tools:
-* The `mongo` web shell on this page https://docs.mongodb.com/manual/tutorial/insert-documents/
-* Mongo Playground at https://mongoplayground.net/
+Your repository includes **7 JSON data files**. Each JSON file maps to a MongoDB collection:
 
-Some data sets come from the "Introduction to Data Mining and Analytics" book.
+| JSON File | Target Collection | Role in the Case Study |
+| :--- | :--- | :--- |
+| `Customers.json` | `customers` | Customer profile records and contact/account details |
+| `Employees.json` | `employees` | Employee directory, roles, and organizational attributes |
+| `Places.json` | `places` | Locations, regions, or branch/site records |
+| `Products.json` | `products` | Product catalog, categories, and pricing fields |
+| `Sales.json` | `sales` | Sales transactions linking customers, products, and staff |
+| `SalesTeam.json` | `salesTeam` | Sales team assignments, territories, and reporting structure |
+| `Students.json` | `students` | Practice collection for basic CRUD and document structure warm-ups |
 
-1. List all employee names.
-```
-db.Employees.find({}, {"Name":1, "_id":0})
-```
-Expected output:
-```json
-{ "Name" : "Janet Clive" }
-{ "Name" : "Betty Love" }
-{ "Name" : "Mary Smith" }
-{ "Name" : "Josh Camper" }
-{ "Name" : "Brian Lewis" }
-{ "Name" : "Martha Swan" }
-{ "Name" : "Veronica Clarence" }
-{ "Name" : "Mike Jones" }
-{ "Name" : "Mary Hayes" }
-```
+## 2. Step-by-Step Setup in OneCompiler
 
-2. List student names and phone numbers.
-```
-db.Students.find({}, {"Name":1, "Phone":1, "_id":0})
-```
-Expected output:
-```json
-{ "Name" : "Monica Davis", "Phone" : "555-1212" }
-{ "Name" : "Jimmy Lewis", "Phone" : "555-1213" }
-{ "Name" : "Sara Knight", "Phone" : "555-1214" }
-{ "Name" : "Billy Williams", "Phone" : "555-1214" }
-```
-3. List names of employees who are supervisors (the "Position" field is "Supervisor").
-```
-db.collection.find({
-  "Position": "Supervisor"
-},
-{
-  "Name": 1,
-  "_id": 0
-})
-```
-Expected output:
-```json
-{ "Name" : "Mary Smith" }
-{ "Name" : "Martha Swan" }
-```
+Because OneCompiler runs in your browser, you will load data using `insertMany(...)` instead of local command-line tools like `mongoimport`.
 
-4. List names and states of employees who do not live in Arizona.
-```
-db.Employees.find({"State": {$ne: "Arizona"}}, {"Name":1, "State":1, "_id":0})
-```
-Expected output:
-```json
-{ "Name" : "Janet Clive", "State" : "California" }
-{ "Name" : "Betty Love", "State" : "Boston" }
-{ "Name" : "Mary Smith", "State" : "Florida" }
-{ "Name" : "Josh Camper", "State" : "AZ" }
-{ "Name" : "Brian Lewis", "State" : "Washington" }
-{ "Name" : "Veronica Clarence", "State" : "AZ" }
-{ "Name" : "Mike Jones", "State" : "California" }
+### Step 1: Open the Online Sandbox
+1. Go to **[https://onecompiler.com/mongodb](https://onecompiler.com/mongodb)** in your browser.
+2. Clear any default starter code in the editor pane so you have a clean script.
+
+### Step 2: Load Your JSON Datasets (`insertMany`)
+OneCompiler resets its temporary database state on each run, so **keep your `insertMany(...)` setup at the top of your script** and place your queries directly below it:
+
+```javascript
+// 1. Paste the JSON array from each repository file inside insertMany(...)
+db.students.insertMany([
+  // Paste contents of Students.json here
+]);
+
+db.customers.insertMany([
+  // Paste contents of Customers.json here
+]);
+
+db.employees.insertMany([
+  // Paste contents of Employees.json here
+]);
+
+db.places.insertMany([
+  // Paste contents of Places.json here
+]);
+
+db.products.insertMany([
+  // Paste contents of Products.json here
+]);
+
+db.sales.insertMany([
+  // Paste contents of Sales.json here
+]);
+
+db.salesTeam.insertMany([
+  // Paste contents of SalesTeam.json here
+]);
 ```
 
-5. List orders with a total price ("Total") greater than or equal to $39.99.
-```
-db.Sales.find({"Total": {$gte: 39.99}}).pretty()
-```
-Expected output:
-```json
-{
-	"_id" : 3,
-	"SalesPerson" : 103,
-	"Region" : "West",
-	"CustomerID" : 403,
-	"ProductID" : 3,
-	"Total" : 39.99,
-	"SaleDate" : "10-01-2020"
-}
-{
-	"_id" : 4,
-	"SalesPerson" : 104,
-	"Region" : "West",
-	"CustomerID" : 401,
-	"ProductID" : 4,
-	"Total" : 49.99,
-	"SaleDate" : "09-01-2020"
-}
-{
-	"_id" : 5,
-	"SalesPerson" : 105,
-	"Region" : "West",
-	"CustomerID" : 401,
-	"ProductID" : 5,
-	"Total" : 59.99,
-	"SaleDate" : "08-01-2020"
-}
-{
-	"_id" : 8,
-	"SalesPerson" : 108,
-	"Region" : "West",
-	"CustomerID" : 402,
-	"ProductID" : 3,
-	"Total" : 39.99,
-	"SaleDate" : "08-01-2020"
-}
-{
-	"_id" : 9,
-	"SalesPerson" : 109,
-	"Region" : "West",
-	"CustomerID" : 402,
-	"ProductID" : 4,
-	"Total" : 49.99,
-	"SaleDate" : "09-01-2020"
-}
+> **Quick Formatting Check:** If a `.json` file already starts with `[` and ends with `]`, paste the entire array directly inside `insertMany( ... )`. If the file lists one JSON object per line without outer brackets, wrap the pasted lines in `[` and `]` separated by commas.
+
+### Step 3: Verify Your Data Loaded
+Add this verification block below your `insertMany` statements and click **Run**:
+
+```javascript
+// Check collection names and document counts
+db.getCollectionNames().forEach(name => {
+  print(name + ": " + db.getCollection(name).countDocuments() + " documents");
+});
 ```
 
-6. List names and states of employees who live in Arizona or AZ.
-```
-db.Employees.find({
-  $or: [
-    {
-      "State": "Arizona"
-    },
-    {
-      "State": "AZ"
-    }
-  ]
-},
-{
-  "Name": 1,
-  "State": 1,
-  "_id": 0
-})
-```
-Expected output:
-```json
-{ "Name" : "Josh Camper", "State" : "AZ" }
-{ "Name" : "Martha Swan", "State" : "Arizona" }
-{ "Name" : "Veronica Clarence", "State" : "AZ" }
-{ "Name" : "Mary Hayes", "State" : "Arizona" }
+**Checkpoint:** Confirm all 7 collections print a document count greater than `0` in the output pane before starting the exercises.
+
+## 3. Tasks
+
+Keep your `insertMany(...)` block at the top of the OneCompiler editor and add each exercise below it. Use `.toArray()` or `printjson(...)` if a query cursor does not automatically print all documents in the output window.
+
+### Part A: Inspect Document Shapes (Warm-Up)
+Unlike SQL tables, MongoDB collections do not enforce a fixed schema upfront. Inspect one document from each collection so you know the exact field names, capitalization, and data types:
+
+```javascript
+printjson(db.students.findOne());
+printjson(db.customers.findOne());
+printjson(db.employees.findOne());
+printjson(db.products.findOne());
+printjson(db.sales.findOne());
 ```
 
-7. List names and states of employees who are sales team members ("Position"="Sales") and do not live in California.
-```
-db.Employees.find({
-  $and: [
-    {
-      "State": {
-        $ne: "California"
-      }
-    },
-    {
-      "Position": "Sales"
-    }
-  ]
-},
-{
-  "Name": 1,
-  "State": 1,
-  "_id": 0
-}).pretty()
-```
-Expected output:
-```json
-{ "Name" : "Betty Love", "State" : "Boston" }
-{ "Name" : "Josh Camper", "State" : "AZ" }
-{ "Name" : "Brian Lewis", "State" : "Washington" }
-{ "Name" : "Veronica Clarence", "State" : "AZ" }
-{ "Name" : "Mary Hayes", "State" : "Arizona" }
+* **Self-Check:** Note which fields are strings, numbers, arrays (`[...]`), or nested subdocuments (`{...}`). Remember that MongoDB field names are **case-sensitive**.
+
+### Part B: Filtering & Projections (`find`)
+Practice retrieving specific documents and limiting which fields return:
+
+1. **Basic Filter:** Query `students` or `products` using an exact field match.
+2. **Comparison Operators:** Query `products` or `sales` using range operators (`$gt`, `$gte`, `$lt`, `$lte`).
+3. **Projections:** Return only the 2–3 fields you need while hiding `_id`:
+
+```javascript
+// Template: replace <collection>, <field>, and <value> with actual schema fields
+printjson(
+  db.<collection>.find(
+    { <field>: { $gte: <value> } },
+    { <field1>: 1, <field2>: 1, _id: 0 }
+  ).toArray()
+);
 ```
 
-8. List employee names in descending order.
-```
-db.Employees.find({}, {"Name":1, "_id":0}).sort({"Name":-1})
-```
-Expected output:
-```json
-{ "Name" : "Veronica Clarence" }
-{ "Name" : "Mike Jones" }
-{ "Name" : "Mary Smith" }
-{ "Name" : "Mary Hayes" }
-{ "Name" : "Martha Swan" }
-{ "Name" : "Josh Camper" }
-{ "Name" : "Janet Clive" }
-{ "Name" : "Brian Lewis" }
-{ "Name" : "Betty Love" }
+### Part C: Safe Document Updates & Deletes (`CRUD`)
+Use the `students` collection first to practice modifying documents safely:
+
+1. **Insert (`insertOne`):** Add one new student document with custom fields (for example, an array of enrolled courses).
+2. **Update (`updateOne` / `$set` / `$push`):** Update a field on your newly added document and append an item to an array field.
+   * **Checkpoint:** Print the update result and inspect `matchedCount` and `modifiedCount` to confirm only the intended document changed.
+3. **Delete (`deleteOne`):** Remove your test document and verify `countDocuments()` returns to its original value.
+
+```javascript
+// Example CRUD workflow
+const updateRes = db.students.updateOne(
+  { /* unique filter */ },
+  { $set: { /* field: newValue */ } }
+);
+printjson(updateRes);
 ```
 
-9. Count the number of documents in the SalesTeam collection.
-```
-db.SalesTeam.aggregate(
-  [
-    {
-      $group: {
-        _id: null,
-        count: {$sum: 1}
-      }
-    }
-  ]
-)
-```
-Expected output:
-```json
-{ "_id" : null, "count" : 9 }
-```
+### Part D: Building Aggregation Pipelines in Stages
+When answering business questions from `business.txt`, build your `aggregate()` pipeline **one stage at a time** so you can inspect the output at each step:
 
-10. Calculate the average product price using the "Products" collection.
-```
-db.Products.aggregate(
-  [
-    {
-      $group: {
-        _id: null,
-        avgPrice: {$avg: "$Price"}
-      }
-    }
-  ]
-)
-```
-Expected output:
-```json
-{ "_id" : null, "avgPrice" : 39.989999999999995 }
-```
+1. **Stage 1 (`$match`):** Filter down to the relevant subset of documents first.
+2. **Stage 2 (`$group`):** Group by a category, employee, place, or customer ID using accumulators (`$sum`, `$avg`, `$count`).
+3. **Stage 3 (`$sort` & `$limit`):** Rank the grouped results from highest to lowest.
+4. **Stage 4 (`$lookup` — Cross-Collection Join):** Combine related collections (such as `sales` with `products` or `customers`) when data lives across two files.
 
-11. Calculate total sales by customer using the "Sales" collection.
-```
-db.Sales.aggregate(
-  [
-    {
-      $group: {
-        _id: "$CustomerID",
-        total: {
-          $sum: "$Total"
-        }
-      }
-    },
-    {
-      $sort: {total: -1}
-    }
-  ]
-)
-```
-Expected output:
-```json
-{ "_id" : 402, "total" : 139.96 }
-{ "_id" : 401, "total" : 129.97 }
-{ "_id" : 403, "total" : 69.98 }
-```
+```javascript
+// Incremental Pipeline Template
+printjson(
+  db.sales.aggregate([
+    // Stage 1: Filter
+    // { $match: { <statusField>: "<value>" } },
 
-12. Update the employee with ID 12345 to the position of supervisor.
-```
-db.Employees.update(
-  {"_id": 12345},
-  {$set: {"Position": "Supervisor"}}
-)
-```
-Before:
-```json
->>> db.Employees.find({"_id":12345}).pretty()
-{
-	"_id" : 12345,
-	"Name" : "Betty Love",
-	"State" : "Boston",
-	"Position" : "Sales",
-	"Phone" : "555-1217",
-	"Region" : "East",
-	"Email" : "BD@MyBusiness.com"
-}
-```
-After:
-```json
->>> db.Employees.find({"_id":12345}).pretty()
-{
-	"_id" : 12345,
-	"Name" : "Betty Love",
-	"State" : "Boston",
-	"Position" : "Supervisor",
-	"Phone" : "555-1217",
-	"Region" : "East",
-	"Email" : "BD@MyBusiness.com"
-}
-```
+    // Stage 2: Group & Summarize
+    // { $group: { _id: "$<groupField>", totalCount: { $sum: 1 } } },
 
-13.  Delete the employee with ID 12345.
+    // Stage 3: Sort Descending
+    // { $sort: { totalCount: -1 } }
+  ]).toArray()
+);
 ```
-db.Employees.deleteOne({"_id": 12345})
-or
-db.Employees.remove({"_id": 12345})
-```
-Expected output:
-```json
-{ "acknowledged" : true, "deletedCount" : 1 }
-```
-
-14. Delete all employees who work in California.
-```
-db.Employees.deleteMany({"State": "California"})
-```
-Expected output:
-```json
-{ "acknowledged" : true, "deletedCount" : 2 }
-```
-```
-db.Employees.remove({"State": "California"})
-```
-Expected output:
-```json
-WriteResult({ "nRemoved" : 2 })
-```
-
-15. Delete all documents in the Employees collection.
-```
-db.Employees.deleteMany({});
-```
-Expected output:
-```json
-{ "acknowledged" : true, "deletedCount" : 9 }
-```
-```
-db.Employees.remove({})
-```
-Expected output:
-```
-WriteResult({ "nRemoved" : 9 })
-```
-
-## Geospatial Queries
-
-Use the `$near` operator to return documents that are at least 1000 meters from and at most 5000 meters from the specified GeoJSON point, sorted in order from nearest to farthest.
-```json
-db.Places.find(
-   {
-     location:
-       { $near:
-          {
-            $geometry: { type: "Point",  coordinates: [ -73.9667, 40.78 ] },
-            $minDistance: 1000,
-            $maxDistance: 5000
-          }
-       }
-   }
-)
-```
-
-Use the `geoNear` aggregation operation to return documents that match the query filter `{ category: "Parks" }`, sorted in order of nearest to farthest to the specified GeoJSON point.
-```json
-db.Places.aggregate( [
-   {
-      $geoNear: {
-         near: { type: "Point", coordinates: [ -73.9667, 40.78 ] },
-         spherical: true,
-         query: { category: "Parks" },
-         distanceField: "calcDistance"
-      }
-   }
-] )
-```
-
-Check out [this tutorial](https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/) for more advanced geospatial queries.

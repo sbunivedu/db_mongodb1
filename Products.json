@@ -36,4 +36,4 @@ var products = [
   }
 ];
 
-db.Products.insert(products);
+db.products.insert(products);

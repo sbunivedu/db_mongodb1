@@ -33,4 +33,4 @@ var places =
 	"category" : "Stadiums"
 }];
 
-db.Places.insert(places);
+db.places.insert(places);

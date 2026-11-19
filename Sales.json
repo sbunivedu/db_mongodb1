@@ -82,4 +82,4 @@ var Sales = [
   }
 ];
 
-db.Sales.insert(sales);
+db.sales.insert(sales);
