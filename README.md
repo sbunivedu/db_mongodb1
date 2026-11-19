@@ -89,60 +89,142 @@ printjson(db.sales.findOne());
 
 * **Self-Check:** Note which fields are strings, numbers, arrays (`[...]`), or nested subdocuments (`{...}`). Remember that MongoDB field names are **case-sensitive**.
 
-### Part B: Filtering & Projections (`find`)
-Practice retrieving specific documents and limiting which fields return:
+## Part B: Filtering & Projections (`find`)
 
-1. **Basic Filter:** Query `students` or `products` using an exact field match.
-2. **Comparison Operators:** Query `products` or `sales` using range operators (`$gt`, `$gte`, `$lt`, `$lte`).
-3. **Projections:** Return only the 2–3 fields you need while hiding `_id`:
+### 1. Basic Exact-Match Filter
+*Example: Find all students in a specific major/grade or products in a specific category.*
 
 ```javascript
-// Template: replace <collection>, <field>, and <value> with actual schema fields
 printjson(
-  db.<collection>.find(
-    { <field>: { $gte: <value> } },
-    { <field1>: 1, <field2>: 1, _id: 0 }
+  db.products.find(
+    { category: "Electronics" } // Replace with an actual field/value from Part A
   ).toArray()
 );
 ```
 
-### Part C: Safe Document Updates & Deletes (`CRUD`)
-Use the `students` collection first to practice modifying documents safely:
-
-1. **Insert (`insertOne`):** Add one new student document with custom fields (for example, an array of enrolled courses).
-2. **Update (`updateOne` / `$set` / `$push`):** Update a field on your newly added document and append an item to an array field.
-   * **Checkpoint:** Print the update result and inspect `matchedCount` and `modifiedCount` to confirm only the intended document changed.
-3. **Delete (`deleteOne`):** Remove your test document and verify `countDocuments()` returns to its original value.
+### 2. Comparison Operators (`$gt`, `$gte`, `$lt`, `$lte`)
+*Example: Find products priced at or above $50, or sales transactions with quantity greater than 2.*
 
 ```javascript
-// Example CRUD workflow
-const updateRes = db.students.updateOne(
-  { /* unique filter */ },
-  { $set: { /* field: newValue */ } }
+printjson(
+  db.products.find(
+    { price: { $gte: 50, $lte: 500 } } // Replace 'price' with your numeric field
+  ).toArray()
 );
-printjson(updateRes);
 ```
 
-### Part D: Building Aggregation Pipelines in Stages
-When answering business questions from `business.txt`, build your `aggregate()` pipeline **one stage at a time** so you can inspect the output at each step:
-
-1. **Stage 1 (`$match`):** Filter down to the relevant subset of documents first.
-2. **Stage 2 (`$group`):** Group by a category, employee, place, or customer ID using accumulators (`$sum`, `$avg`, `$count`).
-3. **Stage 3 (`$sort` & `$limit`):** Rank the grouped results from highest to lowest.
-4. **Stage 4 (`$lookup` — Cross-Collection Join):** Combine related collections (such as `sales` with `products` or `customers`) when data lives across two files.
+### 3. Projections (Limit Returned Fields & Hide `_id`)
+*Example: Return only product name and price without `_id`.*
 
 ```javascript
-// Incremental Pipeline Template
+printjson(
+  db.products.find(
+    { price: { $gte: 50 } },
+    { name: 1, price: 1, _id: 0 } // 1 = include, 0 = exclude
+  ).toArray()
+);
+```
+
+## Part C: Safe Document Updates & Deletes (`CRUD`)
+
+**Complete Step-by-Step Solution:**
+
+```javascript
+// Record initial count
+print("Initial student count: " + db.students.countDocuments());
+
+// 1. Insert one test student document
+const insertRes = db.students.insertOne({
+  studentId: "TEST-999",
+  name: "Alex Rivera",
+  major: "Information Systems",
+  courses: ["Database Systems", "Data Analytics"]
+});
+print("=== INSERT RESULT ===");
+printjson(insertRes);
+
+// 2. Update field ($set) and append to array ($push)
+const updateRes = db.students.updateOne(
+  { studentId: "TEST-999" },
+  {
+    $set: { major: "Computer Science" },
+    $push: { courses: "Cloud Computing" }
+  }
+);
+print("=== UPDATE RESULT ===");
+printjson(updateRes); // Expected: { acknowledged: true, matchedCount: 1, modifiedCount: 1 }
+
+// Verify updated document
+printjson(db.students.findOne({ studentId: "TEST-999" }));
+
+// 3. Delete test document and confirm count returns to baseline
+const deleteRes = db.students.deleteOne({ studentId: "TEST-999" });
+print("=== DELETE RESULT ===");
+printjson(deleteRes); // Expected: { acknowledged: true, deletedCount: 1 }
+print("Final student count: " + db.students.countDocuments());
+```
+
+## Part D: Building Aggregation Pipelines in Stages
+
+### Stages 1–3: Filter (`$match`), Group (`$group`), and Rank (`$sort` & `$limit`)
+*Example: Summarize total sales volume and transaction count per product (or customer/salesperson), sorted highest to lowest.*
+
+```javascript
 printjson(
   db.sales.aggregate([
-    // Stage 1: Filter
-    // { $match: { <statusField>: "<value>" } },
+    // Stage 1: Filter out invalid or zero-quantity rows (adjust field names to match Sales.json)
+    {
+      $match: {
+        quantity: { $gt: 0 }
+      }
+    },
+    // Stage 2: Group by productId and calculate totals
+    {
+      $group: {
+        _id: "$productId",
+        transactionCount: { $sum: 1 },
+        totalUnitsSold: { $sum: "$quantity" }
+      }
+    },
+    // Stage 3: Sort descending by units sold and take top 5
+    {
+      $sort: { totalUnitsSold: -1 }
+    },
+    {
+      $limit: 5
+    }
+  ]).toArray()
+);
+```
 
-    // Stage 2: Group & Summarize
-    // { $group: { _id: "$<groupField>", totalCount: { $sum: 1 } } },
+### Stage 4: Cross-Collection Join (`$lookup`)
+*Example: Join `sales` with `products` so each sale includes product details.*
 
-    // Stage 3: Sort Descending
-    // { $sort: { totalCount: -1 } }
+```javascript
+printjson(
+  db.sales.aggregate([
+    {
+      $lookup: {
+        from: "products",           // Target collection to join
+        localField: "productId",    // Field in 'sales'
+        foreignField: "productId",  // Matching field in 'products' (must share same data type)
+        as: "productDetails"        // Output array field name
+      }
+    },
+    // Optional: Flatten single-match array into an object
+    {
+      $unwind: "$productDetails"
+    },
+    // Project clean output fields
+    {
+      $project: {
+        _id: 0,
+        saleId: 1,
+        productId: 1,
+        productName: "$productDetails.name",
+        quantity: 1
+      }
+    }
   ]).toArray()
 );
 ```
