@@ -127,8 +127,6 @@ printjson(
 
 ## Part C: Safe Document Updates & Deletes (`CRUD`)
 
-**Complete Step-by-Step Solution:**
-
 ```javascript
 // Record initial count
 print("Initial student count: " + db.students.countDocuments());
