@@ -89,9 +89,9 @@ printjson(db.sales.findOne());
 
 * **Self-Check:** Note which fields are strings, numbers, arrays (`[...]`), or nested subdocuments (`{...}`). Remember that MongoDB field names are **case-sensitive**.
 
-## Part B: Filtering & Projections (`find`)
+### Part B: Filtering & Projections (`find`)
 
-### 1. Basic Exact-Match Filter
+#### 1. Basic Exact-Match Filter
 *Example: Find all students in a specific major/grade or products in a specific category.*
 
 ```javascript
@@ -102,7 +102,7 @@ printjson(
 );
 ```
 
-### 2. Comparison Operators (`$gt`, `$gte`, `$lt`, `$lte`)
+#### 2. Comparison Operators (`$gt`, `$gte`, `$lt`, `$lte`)
 *Example: Find products priced at or above $50, or sales transactions with quantity greater than 2.*
 
 ```javascript
@@ -113,7 +113,7 @@ printjson(
 );
 ```
 
-### 3. Projections (Limit Returned Fields & Hide `_id`)
+#### 3. Projections (Limit Returned Fields & Hide `_id`)
 *Example: Return only product name and price without `_id`.*
 
 ```javascript
@@ -125,7 +125,7 @@ printjson(
 );
 ```
 
-## Part C: Safe Document Updates & Deletes (`CRUD`)
+### Part C: Safe Document Updates & Deletes (`CRUD`)
 
 ```javascript
 // Record initial count
@@ -162,9 +162,9 @@ printjson(deleteRes); // Expected: { acknowledged: true, deletedCount: 1 }
 print("Final student count: " + db.students.countDocuments());
 ```
 
-## Part D: Building Aggregation Pipelines in Stages
+### Part D: Building Aggregation Pipelines in Stages
 
-### Stages 1–3: Filter (`$match`), Group (`$group`), and Rank (`$sort` & `$limit`)
+#### Stages 1–3: Filter (`$match`), Group (`$group`), and Rank (`$sort` & `$limit`)
 *Example: Summarize total sales volume and transaction count per product (or customer/salesperson), sorted highest to lowest.*
 
 ```javascript
@@ -195,7 +195,7 @@ printjson(
 );
 ```
 
-### Stage 4: Cross-Collection Join (`$lookup`)
+#### Stage 4: Cross-Collection Join (`$lookup`)
 *Example: Join `sales` with `products` so each sale includes product details.*
 
 ```javascript
