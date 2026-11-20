@@ -29,33 +29,33 @@ OneCompiler resets its temporary database state on each run, so **keep your `ins
 
 ```javascript
 // 1. Paste the JSON array from each repository file inside insertMany(...)
-db.students.insertMany([
+db.students.insertMany(
   // Paste contents of Students.json here
-]);
+);
 
-db.customers.insertMany([
+db.customers.insertMany(
   // Paste contents of Customers.json here
-]);
+);
 
-db.employees.insertMany([
+db.employees.insertMany(
   // Paste contents of Employees.json here
-]);
+);
 
-db.places.insertMany([
+db.places.insertMany(
   // Paste contents of Places.json here
-]);
+);
 
-db.products.insertMany([
+db.products.insertMany(
   // Paste contents of Products.json here
-]);
+);
 
-db.sales.insertMany([
+db.sales.insertMany(
   // Paste contents of Sales.json here
-]);
+);
 
-db.salesTeam.insertMany([
+db.salesTeam.insertMany(
   // Paste contents of SalesTeam.json here
-]);
+);
 ```
 
 > **Quick Formatting Check:** If a `.json` file already starts with `[` and ends with `]`, paste the entire array directly inside `insertMany( ... )`. If the file lists one JSON object per line without outer brackets, wrap the pasted lines in `[` and `]` separated by commas.
