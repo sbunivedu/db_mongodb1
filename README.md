@@ -133,30 +133,30 @@ print("Initial student count: " + db.students.countDocuments());
 
 // 1. Insert one test student document
 const insertRes = db.students.insertOne({
-  studentId: "TEST-999",
-  name: "Alex Rivera",
-  major: "Information Systems",
-  courses: ["Database Systems", "Data Analytics"]
+  StudentId: "TEST-999",
+  Name: "Alex Rivera",
+  Major: "Information Systems",
+  Courses: ["Database Systems", "Data Analytics"]
 });
 print("=== INSERT RESULT ===");
 printjson(insertRes);
 
 // 2. Update field ($set) and append to array ($push)
 const updateRes = db.students.updateOne(
-  { studentId: "TEST-999" },
+  { StudentId: "TEST-999" },
   {
-    $set: { major: "Computer Science" },
-    $push: { courses: "Cloud Computing" }
+    $set: { Major: "Computer Science" },
+    $push: { Courses: "Cloud Computing" }
   }
 );
 print("=== UPDATE RESULT ===");
 printjson(updateRes); // Expected: { acknowledged: true, matchedCount: 1, modifiedCount: 1 }
 
 // Verify updated document
-printjson(db.students.findOne({ studentId: "TEST-999" }));
+printjson(db.students.findOne({ StudentId: "TEST-999" }));
 
 // 3. Delete test document and confirm count returns to baseline
-const deleteRes = db.students.deleteOne({ studentId: "TEST-999" });
+const deleteRes = db.students.deleteOne({ StudentId: "TEST-999" });
 print("=== DELETE RESULT ===");
 printjson(deleteRes); // Expected: { acknowledged: true, deletedCount: 1 }
 print("Final student count: " + db.students.countDocuments());

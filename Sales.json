@@ -1,4 +1,4 @@
-var Sales = [
+[
   {
     "_id": 1,
     "SalesPerson": 101,
@@ -80,6 +80,4 @@ var Sales = [
     "Total": 49.99,
     "SaleDate": "09-01-2020"
   }
-];
-
-db.sales.insert(sales);
+]

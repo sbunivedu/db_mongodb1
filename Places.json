@@ -1,4 +1,3 @@
-var places =
 [{
 	"name" : "Central Park",
 	"location" : {
@@ -9,7 +8,7 @@ var places =
 		]
 	},
 	"category" : "Parks"
-}
+},
 {
 	"name" : "Sara D. Roosevelt Park",
 	"location" : {
@@ -20,7 +19,7 @@ var places =
 		]
 	},
 	"category" : "Parks"
-}
+},
 {
 	"name" : "Polo Grounds",
 	"location" : {
@@ -31,6 +30,4 @@ var places =
 		]
 	},
 	"category" : "Stadiums"
-}];
-
-db.places.insert(places);
+}]
